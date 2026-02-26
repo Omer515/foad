@@ -40,7 +40,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 30px 16px 40px;
+      padding: 56px 16px 32px;
       position: relative;
       overflow-x: hidden;
     }
@@ -78,6 +78,43 @@
       50%       { transform: translateY(-25px) scale(1.08); }
     }
 
+    /* ── Language Switcher (fixed top) ── */
+    .lang-bar {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: flex;
+      gap: 4px;
+      background: rgba(13,0,33,0.75);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 50px;
+      padding: 4px;
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .lang-btn {
+      padding: 5px 14px;
+      border-radius: 50px;
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      font-size: 11px;
+      font-weight: 700;
+      transition: all 0.25s ease;
+      user-select: none;
+      -webkit-user-select: none;
+      white-space: nowrap;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, #ffd700, #ff9f43);
+      color: #1a0040;
+      box-shadow: 0 3px 10px rgba(255,215,0,0.35);
+    }
+
     /* ── Main Container ── */
     .container {
       position: relative;
@@ -87,13 +124,13 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 18px;
+      gap: 12px;
     }
 
     /* ── Profile Avatar ── */
     .avatar-wrap {
       position: relative;
-      margin-bottom: 4px;
+      margin-bottom: 0;
     }
 
     .avatar-ring {
@@ -191,39 +228,10 @@
       text-align: center;
     }
 
-    /* ── Language Switcher ── */
-    .lang-tabs {
-      display: flex;
-      gap: 6px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 50px;
-      padding: 5px;
-      backdrop-filter: blur(10px);
-    }
-
-    .lang-btn {
-      padding: 7px 18px;
-      border-radius: 50px;
-      background: transparent;
-      color: rgba(255,255,255,0.55);
-      font-size: 12px;
-      font-weight: 700;
-      transition: all 0.3s ease;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-
-    .lang-btn.active {
-      background: linear-gradient(135deg, #ffd700, #ff9f43);
-      color: #1a0040;
-      box-shadow: 0 4px 16px rgba(255,215,0,0.4);
-    }
-
     /* ── Tagline ── */
     .tagline-block {
       text-align: center;
-      line-height: 1.9;
+      line-height: 1.7;
     }
 
     .tag-line {
@@ -253,9 +261,9 @@
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,215,0,0.25);
       border-radius: 50px;
-      padding: 10px 24px;
+      padding: 8px 20px;
       color: #ffd700;
-      font-size: 16px;
+      font-size: 15px;
       font-weight: 800;
       letter-spacing: 2.5px;
       direction: ltr;
@@ -435,6 +443,13 @@
   <div class="orb orb-2"></div>
   <div class="orb orb-3"></div>
 
+  <!-- ── Language Bar (fixed top) ── -->
+  <div class="lang-bar" role="tablist">
+    <button class="lang-btn active" onclick="setLang('ar', this)" role="tab">عربي</button>
+    <button class="lang-btn" onclick="setLang('ku', this)" role="tab">کوردی</button>
+    <button class="lang-btn" onclick="setLang('en', this)" role="tab">EN</button>
+  </div>
+
   <div class="container">
 
     <!-- ── Avatar ── -->
@@ -452,13 +467,6 @@
 
     <!-- ── Title ── -->
     <div class="business-title">فواد سكرين</div>
-
-    <!-- ── Language Tabs ── -->
-    <div class="lang-tabs" role="tablist">
-      <button class="lang-btn active" onclick="setLang('ar', this)" role="tab">عربي</button>
-      <button class="lang-btn" onclick="setLang('ku', this)" role="tab">کوردی</button>
-      <button class="lang-btn" onclick="setLang('en', this)" role="tab">EN</button>
-    </div>
 
     <!-- ── Tagline ── -->
     <div class="tagline-block">
