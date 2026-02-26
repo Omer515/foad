@@ -1,2 +1,616 @@
-الموقع بفلوس 
-لجعلم الموقع يعمل ادفع
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>فواد سكرين | Foad Screen</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+    }
+
+    a, button {
+      outline: none !important;
+      -webkit-tap-highlight-color: transparent !important;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    a:focus, a:active, a:focus-visible,
+    button:focus, button:active, button:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, -apple-system, Arial, sans-serif;
+      background: #0d0021;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 16px 40px;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated Gradient Background ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(139,92,246,0.45) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 50% at 100% 100%, rgba(255,215,0,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 40% at 0% 80%, rgba(168,85,247,0.2) 0%, transparent 60%),
+        linear-gradient(160deg, #0d0021 0%, #1a0040 50%, #0a0018 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ── Floating Orbs ── */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(70px);
+      opacity: 0.25;
+      pointer-events: none;
+      z-index: 0;
+      animation: orbFloat 8s ease-in-out infinite;
+    }
+    .orb-1 { width: 320px; height: 320px; background: #7c3aed; top: -80px; right: -60px; animation-delay: 0s; }
+    .orb-2 { width: 220px; height: 220px; background: #ffd700; bottom: 120px; left: -60px; animation-delay: 3s; }
+    .orb-3 { width: 160px; height: 160px; background: #a855f7; bottom: -40px; right: 80px; animation-delay: 6s; }
+
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50%       { transform: translateY(-25px) scale(1.08); }
+    }
+
+    /* ── Main Container ── */
+    .container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 440px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    /* ── Profile Avatar ── */
+    .avatar-wrap {
+      position: relative;
+      margin-bottom: 4px;
+    }
+
+    .avatar-ring {
+      width: 158px;
+      height: 158px;
+      border-radius: 50%;
+      padding: 3.5px;
+      background: linear-gradient(135deg, #ffd700, #ff6b6b, #a855f7, #38bdf8, #ffd700);
+      background-size: 400% 400%;
+      animation: ringGrad 5s ease infinite;
+      box-shadow:
+        0 0 35px rgba(255,215,0,0.35),
+        0 0 70px rgba(139,92,246,0.25);
+    }
+
+    @keyframes ringGrad {
+      0%   { background-position: 0% 50%; }
+      50%  { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .avatar-inner {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #1e0052, #3b0d82);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .avatar-inner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: url('prog.jpg') center / cover no-repeat;
+      opacity: 0.18;
+      border-radius: 50%;
+    }
+
+    .avatar-icon {
+      font-size: 38px;
+      position: relative;
+      z-index: 1;
+      filter: drop-shadow(0 0 12px rgba(255,215,0,0.9));
+      margin-bottom: 2px;
+      animation: iconPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes iconPulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.1); }
+    }
+
+    .avatar-label {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      font-weight: 900;
+      color: #ffd700;
+      text-shadow: 0 0 12px rgba(255,215,0,0.8);
+      letter-spacing: 1px;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    /* WhatsApp badge */
+    .avatar-badge {
+      position: absolute;
+      bottom: 6px;
+      left: 6px;
+      width: 30px;
+      height: 30px;
+      background: #25d366;
+      border-radius: 50%;
+      border: 2.5px solid #0d0021;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 15px;
+      box-shadow: 0 4px 12px rgba(37,211,102,0.5);
+    }
+
+    /* ── Business Title ── */
+    .business-title {
+      font-size: 28px;
+      font-weight: 900;
+      color: #ffd700;
+      text-shadow: 0 0 24px rgba(255,215,0,0.5);
+      letter-spacing: 2px;
+      text-align: center;
+    }
+
+    /* ── Language Switcher ── */
+    .lang-tabs {
+      display: flex;
+      gap: 6px;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50px;
+      padding: 5px;
+      backdrop-filter: blur(10px);
+    }
+
+    .lang-btn {
+      padding: 7px 18px;
+      border-radius: 50px;
+      background: transparent;
+      color: rgba(255,255,255,0.55);
+      font-size: 12px;
+      font-weight: 700;
+      transition: all 0.3s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .lang-btn.active {
+      background: linear-gradient(135deg, #ffd700, #ff9f43);
+      color: #1a0040;
+      box-shadow: 0 4px 16px rgba(255,215,0,0.4);
+    }
+
+    /* ── Tagline ── */
+    .tagline-block {
+      text-align: center;
+      line-height: 1.9;
+    }
+
+    .tag-line {
+      display: none;
+      animation: fadeUp 0.35s ease;
+    }
+    .tag-line.show { display: block; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .tag-main {
+      font-size: 14px;
+      font-weight: 700;
+      color: #ffd700;
+    }
+    .tag-addr {
+      font-size: 12px;
+      color: rgba(255,255,255,0.55);
+      margin-top: 2px;
+    }
+
+    /* ── Phone Pill ── */
+    .phone-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,215,0,0.25);
+      border-radius: 50px;
+      padding: 10px 24px;
+      color: #ffd700;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      direction: ltr;
+      box-shadow: 0 0 20px rgba(255,215,0,0.1);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      width: 85%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,215,0,0.35), transparent);
+    }
+
+    /* ── Social Cards ── */
+    .links {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 15px 18px;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.09);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s ease, border-color 0.25s ease;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    .card:focus, .card:focus-visible { outline: none !important; }
+
+    .card:hover  { transform: translateY(-3px) scale(1.018); }
+    .card:active { transform: scale(0.975); transition-duration: 0.1s; }
+
+    /* Shimmer sweep */
+    .card::after {
+      content: '';
+      position: absolute;
+      top: -100%;
+      left: -60%;
+      width: 50%;
+      height: 300%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,0.06), transparent);
+      transform: skewX(-20deg);
+      transition: left 0.6s ease;
+      pointer-events: none;
+    }
+    .card:hover::after { left: 160%; }
+
+    /* WhatsApp */
+    .card-wa {
+      background: linear-gradient(135deg, rgba(37,211,102,0.12) 0%, rgba(18,140,126,0.12) 100%);
+      border-color: rgba(37,211,102,0.25);
+    }
+    .card-wa:hover {
+      box-shadow: 0 12px 32px rgba(37,211,102,0.25);
+      border-color: rgba(37,211,102,0.5);
+    }
+
+    /* Facebook */
+    .card-fb {
+      background: linear-gradient(135deg, rgba(24,119,242,0.12) 0%, rgba(66,103,178,0.12) 100%);
+      border-color: rgba(24,119,242,0.25);
+    }
+    .card-fb:hover {
+      box-shadow: 0 12px 32px rgba(24,119,242,0.25);
+      border-color: rgba(24,119,242,0.5);
+    }
+
+    /* TikTok */
+    .card-tt {
+      background: linear-gradient(135deg, rgba(0,0,0,0.35) 0%, rgba(37,244,238,0.08) 50%, rgba(254,44,85,0.08) 100%);
+      border-color: rgba(37,244,238,0.22);
+    }
+    .card-tt:hover {
+      box-shadow: 0 12px 32px rgba(37,244,238,0.15), 0 12px 32px rgba(254,44,85,0.15);
+      border-color: rgba(37,244,238,0.45);
+    }
+
+    /* Maps */
+    .card-map {
+      background: linear-gradient(135deg, rgba(234,67,53,0.12) 0%, rgba(251,188,4,0.12) 100%);
+      border-color: rgba(234,67,53,0.25);
+    }
+    .card-map:hover {
+      box-shadow: 0 12px 32px rgba(234,67,53,0.25);
+      border-color: rgba(234,67,53,0.5);
+    }
+
+    /* ── Card Icon ── */
+    .ic {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .ic-wa  { background: linear-gradient(135deg, #25d366, #128c7e); color: #fff; }
+    .ic-fb  { background: linear-gradient(135deg, #1877f2, #4267b2); color: #fff; }
+    .ic-tt  { background: linear-gradient(135deg, #010101, #2a2a2a); }
+    .ic-map { background: linear-gradient(135deg, #ea4335, #fbbc04); color: #fff; }
+
+    /* TikTok SVG icon */
+    .tt-svg { width: 27px; height: 27px; }
+
+    /* ── Card Text ── */
+    .card-text {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      min-width: 0;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-sub {
+      font-size: 11px;
+      color: rgba(255,255,255,0.5);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* ── Arrow ── */
+    .arrow {
+      color: rgba(255,255,255,0.35);
+      font-size: 18px;
+      position: relative;
+      z-index: 1;
+      transition: transform 0.3s ease, color 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .card:hover .arrow {
+      color: rgba(255,255,255,0.8);
+    }
+
+    [dir="rtl"] .card:hover .arrow { transform: translateX(-6px); }
+    [dir="ltr"] .card:hover .arrow { transform: translateX(6px); }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      color: rgba(255,255,255,0.25);
+      font-size: 11px;
+      padding-top: 4px;
+    }
+
+    .footer span { color: #ffd700; }
+  </style>
+</head>
+<body>
+
+  <!-- Background orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <div class="container">
+
+    <!-- ── Avatar ── -->
+    <div class="avatar-wrap">
+      <div class="avatar-ring">
+        <div class="avatar-inner">
+          <div class="avatar-icon">🖨️</div>
+          <div class="avatar-label">فواد<br>سكرين</div>
+        </div>
+      </div>
+      <div class="avatar-badge">
+        <i class="fab fa-whatsapp"></i>
+      </div>
+    </div>
+
+    <!-- ── Title ── -->
+    <div class="business-title">فواد سكرين</div>
+
+    <!-- ── Language Tabs ── -->
+    <div class="lang-tabs" role="tablist">
+      <button class="lang-btn active" onclick="setLang('ar', this)" role="tab">عربي</button>
+      <button class="lang-btn" onclick="setLang('ku', this)" role="tab">کوردی</button>
+      <button class="lang-btn" onclick="setLang('en', this)" role="tab">EN</button>
+    </div>
+
+    <!-- ── Tagline ── -->
+    <div class="tagline-block">
+      <div class="tag-line show" id="tl-ar">
+        <div class="tag-main">🎨 طباعة فنية ملونة على كافة المواد</div>
+        <div class="tag-addr">📍 اربيل - شارع التربيه</div>
+      </div>
+      <div class="tag-line" id="tl-ku">
+        <div class="tag-main">🎨 چاپی هونەری رەنگاوەرەنگ لەسەر هەموو کەلوپەلێک</div>
+        <div class="tag-addr">📍 هەولێر - شەقامی پەروەردە</div>
+      </div>
+      <div class="tag-line" id="tl-en">
+        <div class="tag-main">🎨 Artistic Colorful Printing on All Materials</div>
+        <div class="tag-addr">📍 Erbil – Education Street</div>
+      </div>
+    </div>
+
+    <!-- ── Phone ── -->
+    <div class="phone-pill">📞 0771 070 4685</div>
+
+    <div class="divider"></div>
+
+    <!-- ── Links ── -->
+    <div class="links">
+
+      <!-- WhatsApp -->
+      <a href="https://wa.me/9647710704685" class="card card-wa" target="_blank" rel="noopener noreferrer">
+        <div class="ic ic-wa"><i class="fab fa-whatsapp"></i></div>
+        <div class="card-text">
+          <div class="card-title" id="t-wa">تواصل عبر واتساب</div>
+          <div class="card-sub" id="s-wa">+964 771 070 4685</div>
+        </div>
+        <i class="fas fa-chevron-left arrow" id="arr"></i>
+      </a>
+
+      <!-- Facebook -->
+      <a href="https://www.facebook.com/share/1C7D7DfNc7/" class="card card-fb" target="_blank" rel="noopener noreferrer">
+        <div class="ic ic-fb"><i class="fab fa-facebook-f"></i></div>
+        <div class="card-text">
+          <div class="card-title" id="t-fb">صفحتنا على فيسبوك</div>
+          <div class="card-sub" id="s-fb">Facebook · فەیسبووک</div>
+        </div>
+        <i class="fas fa-chevron-left arrow"></i>
+      </a>
+
+      <!-- TikTok -->
+      <a href="https://www.tiktok.com/@davin.mhamad?_r=1&_t=ZS-94FjBcwTJxp" class="card card-tt" target="_blank" rel="noopener noreferrer">
+        <div class="ic ic-tt">
+          <!-- Official TikTok SVG -->
+          <svg class="tt-svg" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M27.2 7.84a7.84 7.84 0 0 1-7.84-7.84h-5.07v21.76a4.16 4.16 0 1 1-4.16-4.16 4.2 4.2 0 0 1 1.28.21V12.7a9.28 9.28 0 0 0-1.28-.09 9.22 9.22 0 0 0 0 18.44 9.22 9.22 0 0 0 9.22-9.22V11.5a12.9 12.9 0 0 0 7.84 2.64V9.07a7.86 7.86 0 0 1-1-.23z" fill="#25F4EE"/>
+            <path d="M27.2 7.84a7.84 7.84 0 0 1-7.84-7.84h-5.07v21.76a4.16 4.16 0 1 1-4.16-4.16 4.2 4.2 0 0 1 1.28.21V12.7a9.28 9.28 0 0 0-1.28-.09 9.22 9.22 0 0 0 0 18.44 9.22 9.22 0 0 0 9.22-9.22V11.5a12.9 12.9 0 0 0 7.84 2.64V9.07a7.86 7.86 0 0 1-1-.23z" fill="#FE2C55" opacity="0.6"/>
+            <path d="M26.2 8.61a7.84 7.84 0 0 1-6.84-7.61h-5.07v21.76a4.16 4.16 0 1 1-5.44-3.95V12.7a9.22 9.22 0 1 0 11.07 9.05V11.5a12.9 12.9 0 0 0 7.84 2.64V9.07a7.88 7.88 0 0 1-1.56-.46z" fill="white" opacity="0.85"/>
+          </svg>
+        </div>
+        <div class="card-text">
+          <div class="card-title" id="t-tt">تابعنا على تيك توك</div>
+          <div class="card-sub" id="s-tt">@davin.mhamad · TikTok</div>
+        </div>
+        <i class="fas fa-chevron-left arrow"></i>
+      </a>
+
+      <!-- Google Maps -->
+      <a href="https://maps.app.goo.gl/WkATh3StcsZNTPsP7" class="card card-map" target="_blank" rel="noopener noreferrer">
+        <div class="ic ic-map">
+          <!-- Google Maps pin SVG -->
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/>
+          </svg>
+        </div>
+        <div class="card-text">
+          <div class="card-title" id="t-map">موقعنا على الخريطة</div>
+          <div class="card-sub" id="s-map">Google Maps · گووگڵ مەپس</div>
+        </div>
+        <i class="fas fa-chevron-left arrow"></i>
+      </a>
+
+    </div>
+
+    <!-- ── Footer ── -->
+    <div class="footer">
+      <span>فواد سكرين</span> &copy; 2025 &middot; اربيل، العراق
+    </div>
+
+  </div>
+
+  <script>
+    // ── Kill ALL blue highlight / focus rings on any touch ──
+    document.addEventListener('touchstart', function () {}, { passive: true });
+    document.addEventListener('pointerdown', function (e) {
+      e.target.blur();
+    });
+
+    // ── Multilingual data ──
+    const langs = {
+      ar: {
+        dir: 'rtl', lang: 'ar',
+        wa:  ['تواصل عبر واتساب',      '+964 771 070 4685'],
+        fb:  ['صفحتنا على فيسبوك',     'تابع آخر أعمالنا'],
+        tt:  ['تابعنا على تيك توك',    '@davin.mhamad · TikTok'],
+        map: ['موقعنا على الخريطة',    'اربيل - شارع التربيه'],
+        arr: 'fa-chevron-left',
+      },
+      ku: {
+        dir: 'rtl', lang: 'ku',
+        wa:  ['پەیوەندی لە ڕێگەی واتساپ', '+964 771 070 4685'],
+        fb:  ['پەڕەی فەیسبووکمان',         'کارەکانمان بدۆزەرەوە'],
+        tt:  ['لە تیک تۆکمان بدوێ',        '@davin.mhamad · TikTok'],
+        map: ['شوێنمان لە نەخشە',          'هەولێر - شەقامی پەروەردە'],
+        arr: 'fa-chevron-left',
+      },
+      en: {
+        dir: 'ltr', lang: 'en',
+        wa:  ['Contact via WhatsApp',      '+964 771 070 4685'],
+        fb:  ['Our Facebook Page',         'Follow our latest work'],
+        tt:  ['Follow us on TikTok',       '@davin.mhamad · TikTok'],
+        map: ['Our Location on Maps',      'Erbil – Education Street'],
+        arr: 'fa-chevron-right',
+      },
+    };
+
+    function setLang(code, btn) {
+      const d = langs[code];
+
+      // Tabs
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      // Taglines
+      document.querySelectorAll('.tag-line').forEach(el => el.classList.remove('show'));
+      document.getElementById('tl-' + code).classList.add('show');
+
+      // Direction
+      document.documentElement.dir  = d.dir;
+      document.documentElement.lang = d.lang;
+
+      // Card titles & subtitles
+      setText('t-wa',  d.wa[0]);  setText('s-wa',  d.wa[1]);
+      setText('t-fb',  d.fb[0]);  setText('s-fb',  d.fb[1]);
+      setText('t-tt',  d.tt[0]);  setText('s-tt',  d.tt[1]);
+      setText('t-map', d.map[0]); setText('s-map', d.map[1]);
+
+      // Flip arrows
+      document.querySelectorAll('.arrow').forEach(a => {
+        a.className = 'fas ' + d.arr + ' arrow';
+      });
+    }
+
+    function setText(id, val) {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    }
+  </script>
+</body>
+</html>
